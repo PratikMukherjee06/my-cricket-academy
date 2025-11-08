@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sodepur Club Cricket Academy - Train Like a Champion</title>
+    <!-- Load Inter font and Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Configure Tailwind with custom colors and Inter font
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary-navy': '#0A1931',
+              'sporty-green': '#00A859',
+              'cta-red': '#E53935',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+        /* Base styles for smooth transitions and font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+        }
+        .page-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            min-height: calc(100vh - 12rem); /* Ensure min height for content */
+        }
+        .page-content.active {
+            display: block;
+            opacity: 1;
+        }
+        /* Compensation for fixed header */
+        .content-section {
+            padding-top: 8rem; 
+            padding-bottom: 4rem;
+        }
+        
+        /* --- NEW ANIMATION STYLES --- */
+        /* Base state for scroll-triggered animation (Hidden and slightly translated down) */
+        .animate-ready {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        /* Final state when element intersects viewport */
+        .animate-ready.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- END NEW ANIMATION STYLES --- */
+
+        /* Mobile optimization for Fee Table */
+        @media (max-width: 768px) {
+            .fee-table thead {
+                display: none;
+            }
+            .fee-table tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #00A85950;
+                border-radius: 0.75rem;
+                overflow: hidden;
+            }
+            .fee-table td {
+                display: block;
+                text-align: right;
+                padding: 0.75rem 1rem;
+                position: relative;
+                border: none;
+            }
+            .fee-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 1rem;
+                font-weight: 600;
+                color: #0A1931;
+            }
+            .fee-table tr td:first-child {
+                background-color: #00A859;
+                color: white;
+                font-weight: bold;
+                text-align: center;
+                padding-left: 0.5rem;
+            }
+            .fee-table tr td:first-child:before {
+                content: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-primary-navy">
+
+    <!-- Fixed Header & Navigation -->
+    <header id="main-header" class="fixed top-0 left-0 w-full bg-primary-navy shadow-lg z-50 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold text-sporty-green tracking-tight">Sodepur Club</h1>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6 text-sm font-medium">
+                    <li><a href="#" data-page="home" class="nav-link text-white hover:text-sporty-green transition duration-300 active-link">Home</a></li>
+                    <li><a href="#" data-page="about" class="nav-link text-white hover:text-sporty-green transition duration-300">About Us</a></li>
+                    <li><a href="#" data-page="programs" class="nav-link text-white hover:text-sporty-green transition duration-300">Programs</a></li>
+                    <li><a href="#" data-page="coaches" class="nav-link text-white hover:text-sporty-green transition duration-300">Coaches</a></li>
+                    <li><a href="#" data-page="admissions" class="nav-link text-white bg-cta-red px-3 py-1 rounded-full hover:bg-red-600 transition duration-300 shadow-lg">Fees & Admissions</a></li>
+                    <li><a href="#" data-page="gallery" class="nav-link text-white hover:text-sporty-green transition duration-300">Gallery</a></li>
+                    <li><a href="#" data-page="schedules" class="nav-link text-white hover:text-sporty-green transition duration-300">Schedules</a></li>
+                    <li><a href="#" data-page="news" class="nav-link text-white hover:text-sporty-green transition duration-300">News</a></li>
+                    <li><a href="#" data-page="facilities" class="nav-link text-white hover:text-sporty-green transition duration-300">Facilities</a></li>
+                    <li><a href="#" data-page="contact" class="nav-link text-white hover:text-sporty-green transition duration-300">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-primary-navy border-t border-gray-700">
+            <ul class="flex flex-col p-4 space-y-2 text-base font-medium">
+                <li><a href="#" data-page="home" class="nav-link block text-white hover:text-sporty-green transition duration-300 active-link p-2 rounded-md">Home</a></li>
+                <li><a href="#" data-page="about" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">About Us</a></li>
+                <li><a href="#" data-page="programs" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Programs</a></li>
+                <li><a href="#" data-page="coaches" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Coaches</a></li>
+                <li><a href="#" data-page="admissions" class="nav-link block text-white bg-cta-red p-2 rounded-md hover:bg-red-600 transition duration-300">Fees & Admissions</a></li>
+                <li><a href="#" data-page="gallery" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Gallery</a></li>
+                <li><a href="#" data-page="schedules" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Schedules</a></li>
+                <li><a href="#" data-page="news" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">News</a></li>
+                <li><a href="#" data-page="facilities" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Facilities</a></li>
+                <li><a href="#" data-page="contact" class="nav-link block text-white hover:text-sporty-green transition duration-300 p-2 rounded-md">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="content-area" class="mt-[6.5rem]"> 
+
+        <!-- 1. HOME PAGE -->
+        <section id="home" class="page-content active content-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Hero Section (No scroll animation needed here, static content) -->
+                <div class="relative bg-primary-navy rounded-xl shadow-2xl overflow-hidden mb-12">
+                    <!-- Placeholder Image for High-Impact Hero -->
+                    <img src="https://placehold.co/1200x600/00A859/FFFFFF?text=High-Impact+Cricket+Training+Action" alt="Sodepur Club cricket academy training session in action" class="w-full h-96 object-cover opacity-60">
+                    <div class="absolute inset-0 bg-primary-navy bg-opacity-70 flex flex-col justify-center items-center text-center p-8 sm:p-12">
+                        <h2 class="text-4xl sm:text-6xl font-black text-white leading-tight mb-4">
+                            Train Like a <span class="text-sporty-green">Champion.</span> Define Your Future.
+                        </h2>
+                        <p class="text-xl text-gray-200 mb-8 max-w-2xl">
+                            Unlock your cricketing potential with expert coaching, world-class facilities, and a dedicated pathway to success.
+                        </p>
+                        <button onclick="changePage('admissions')" class="bg-cta-red text-white text-lg font-bold py-3 px-8 rounded-full shadow-xl hover:bg-red-600 transition duration-300 transform hover:scale-105">
+                            View Programs & Fees
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Links & Features -->
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <!-- Added animate-ready class to enable scroll animation -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sporty-green animate-ready">
+                        <span class="text-5xl text-sporty-green mb-3 block">🏏</span>
+                        <h3 class="text-xl font-bold mb-2">Expert Coaching</h3>
+                        <p class="text-gray-600">BCCI Certified coaches guiding every step of your journey.</p>
+                    </div>
+                    <!-- Added animate-ready class to enable scroll animation -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sporty-green animate-ready" style="transition-delay: 150ms;">
+                        <span class="text-5xl text-sporty-green mb-3 block">🗓️</span>
+                        <h3 class="text-xl font-bold mb-2">Structured Programs</h3>
+                        <p class="text-gray-600">Age-specific training from U-12 to Elite level.</p>
+                    </div>
+                    <!-- Added animate-ready class to enable scroll animation -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-sporty-green animate-ready" style="transition-delay: 300ms;">
+                        <span class="text-5xl text-sporty-green mb-3 block">🏟️</span>
+                        <h3 class="text-xl font-bold mb-2">Modern Facilities</h3>
+                        <p class="text-gray-600">Turf nets, bowling machines, and dedicated fitness areas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT US -->
+        <section id="about" class="page-content content-section">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-8 border-b-4 border-sporty-green pb-2 animate-ready">Our Story: Building Tomorrow's Cricketers</h2>
+                <p class="text-gray-700 mb-6 text-lg leading-relaxed animate-ready" style="transition-delay: 150ms;">
+                    Founded in 1995, Sodepur Club has been a cornerstone of cricket excellence in the region. Our Academy was established with a clear vision: to nurture raw talent, instill professional discipline, and create a clear pathway for young cricketers to achieve state and national recognition. We believe that success is built on a foundation of technique, physical conditioning, and mental resilience.
+                </p>
+                <div class="bg-white p-6 rounded-lg shadow-xl mb-6 animate-ready" style="transition-delay: 300ms;">
+                    <h3 class="text-2xl font-semibold text-sporty-green mb-3">Our Mission</h3>
+                    <p class="text-gray-600">To provide comprehensive, high-quality cricket coaching in a supportive and challenging environment, fostering the next generation of sporting leaders and skilled players.</p>
+                </div>
+                <button onclick="changePage('coaches')" class="bg-primary-navy text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-700 transition duration-300 animate-ready" style="transition-delay: 450ms;">
+                    Meet Our Experienced Team &rarr;
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. ACADEMY PROGRAMS -->
+        <section id="programs" class="page-content content-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-sporty-green pb-2">Our Specialized Training Programs</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Program Card 1: Juniors -->
+                    <div class="bg-white rounded-xl shadow-2xl overflow-hidden hover:shadow-primary-navy/20 transition duration-500 animate-ready">
+                        <div class="bg-sporty-green text-white p-6">
+                            <h3 class="text-3xl font-bold mb-1">Junior Foundations</h3>
+                            <p class="text-lg">Ages U-12 | Starting Strong</p>
+                        </div>
+                        <div class="p-6">
+                            <ul class="list-none space-y-2 text-gray-700 mb-6">
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Basic grip and stance fundamentals.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Hand-eye coordination drills and movement.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Fun, game-based learning.</li>
+                            </ul>
+                            <button onclick="changePage('admissions')" class="w-full bg-primary-navy text-white font-semibold py-3 rounded-full hover:bg-gray-700 transition duration-300">
+                                View Fees
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Program Card 2: Intermediate -->
+                    <div class="bg-white rounded-xl shadow-2xl overflow-hidden hover:shadow-primary-navy/20 transition duration-500 animate-ready" style="transition-delay: 150ms;">
+                        <div class="bg-primary-navy text-white p-6">
+                            <h3 class="text-3xl font-bold mb-1">Intermediate Skills</h3>
+                            <p class="text-lg">Ages U-16 | Refinement & Strength</p>
+                        </div>
+                        <div class="p-6">
+                            <ul class="list-none space-y-2 text-gray-700 mb-6">
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Advanced batting strokes & defensive techniques.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Introduction to spin/pace variations and match strategy.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Structured physical conditioning.</li>
+                            </ul>
+                            <button onclick="changePage('admissions')" class="w-full bg-cta-red text-white font-semibold py-3 rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-[1.02]">
+                                Enroll Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Program Card 3: Elite -->
+                    <div class="bg-white rounded-xl shadow-2xl overflow-hidden hover:shadow-primary-navy/20 transition duration-500 animate-ready" style="transition-delay: 300ms;">
+                        <div class="bg-sporty-green text-white p-6">
+                            <h3 class="text-3xl font-bold mb-1">Elite Performance</h3>
+                            <p class="text-lg">Ages U-19 & Above | Professional Track</p>
+                        </div>
+                        <div class="p-6">
+                            <ul class="list-none space-y-2 text-gray-700 mb-6">
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> High-intensity match simulation and mental training.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Video analysis and personalized performance reports.</li>
+                                <li class="flex items-start"><span class="text-sporty-green mr-2 font-bold">✓</span> Focus on inter-club and district representation.</li>
+                            </ul>
+                            <button onclick="changePage('admissions')" class="w-full bg-primary-navy text-white font-semibold py-3 rounded-full hover:bg-gray-700 transition duration-300">
+                                View Fees
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. COACHES -->
+        <section id="coaches" class="page-content content-section bg-primary-navy/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-sporty-green pb-2">Meet Our Coaching Team</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Coach 1 -->
+                    <div class="bg-white rounded-xl shadow-xl overflow-hidden text-center p-6 transition duration-300 hover:scale-[1.03] animate-ready">
+                        <img src="https://placehold.co/150x150/0A1931/FFFFFF?text=P.S." alt="Coach Profile Picture" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-sporty-green mb-4">
+                        <h4 class="text-xl font-bold text-primary-navy">Pankaj Sharma</h4>
+                        <p class="text-sporty-green font-semibold mb-3">Head Coach & Mentor</p>
+                        <p class="text-sm text-gray-600">BCCI Level 3 Certified. Specializes in advanced batting technique and player development. 20+ years experience.</p>
+                    </div>
+                    
+                    <!-- Coach 2 -->
+                    <div class="bg-white rounded-xl shadow-xl overflow-hidden text-center p-6 transition duration-300 hover:scale-[1.03] animate-ready" style="transition-delay: 150ms;">
+                        <img src="https://placehold.co/150x150/0A1931/FFFFFF?text=A.K." alt="Coach Profile Picture" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-sporty-green mb-4">
+                        <h4 class="text-xl font-bold text-primary-navy">Anjali Kumari</h4>
+                        <p class="text-sporty-green font-semibold mb-3">Fast Bowling Specialist</p>
+                        <p class="text-sm text-gray-600">Former State Player. Expertise in biomechanics and injury prevention for pacers. Focus on U-16 and Elite training.</p>
+                    </div>
+
+                    <!-- Coach 3 -->
+                    <div class="bg-white rounded-xl shadow-xl overflow-hidden text-center p-6 transition duration-300 hover:scale-[1.03] animate-ready" style="transition-delay: 300ms;">
+                        <img src="https://placehold.co/150x150/0A1931/FFFFFF?text=R.V." alt="Coach Profile Picture" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-sporty-green mb-4">
+                        <h4 class="text-xl font-bold text-primary-navy">Rohit Verma</h4>
+                        <p class="text-sporty-green font-semibold mb-3">Junior Program Lead</p>
+                        <p class="text-sm text-gray-600">Passionate coach focusing on U-12 fundamentals and building a love for the game. Certified first aid responder.</p>
+                    </div>
+
+                    <!-- Coach 4 -->
+                    <div class="bg-white rounded-xl shadow-xl overflow-hidden text-center p-6 transition duration-300 hover:scale-[1.03] animate-ready" style="transition-delay: 450ms;">
+                        <img src="https://placehold.co/150x150/0A1931/FFFFFF?text=S.M." alt="Coach Profile Picture" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-sporty-green mb-4">
+                        <h4 class="text-xl font-bold text-primary-navy">Suresh Mani</h4>
+                        <p class="text-sporty-green font-semibold mb-3">Wicketkeeping & Fielding</p>
+                        <p class="text-sm text-gray-600">Expert in dynamic fielding drills, agility, and wicketkeeping skills. Focus on match-readiness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ADMISSIONS & FEES (CRITICAL) -->
+        <section id="admissions" class="page-content content-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-8 border-b-4 border-cta-red pb-2">Enrollment and Fee Structure</h2>
+
+                <!-- Admission Process -->
+                <div class="mb-12 bg-white p-6 sm:p-8 rounded-xl shadow-xl border-l-8 border-cta-red animate-ready">
+                    <h3 class="text-3xl font-bold text-primary-navy mb-4">Your 3-Step Admission Process</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg animate-ready" style="transition-delay: 150ms;">
+                            <p class="text-4xl font-black text-cta-red mb-2">1</p>
+                            <p class="font-semibold text-lg mb-1">Enquire & Visit</p>
+                            <p class="text-sm text-gray-600">Contact us to schedule an academy visit and initial consultation with a coach.</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg animate-ready" style="transition-delay: 300ms;">
+                            <p class="text-4xl font-black text-cta-red mb-2">2</p>
+                            <p class="font-semibold text-lg mb-1">Trial & Assessment</p>
+                            <p class="text-sm text-gray-600">Complete a 1-day free trial session for placement assessment by our Head Coach.</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg animate-ready" style="transition-delay: 450ms;">
+                            <p class="text-4xl font-black text-cta-red mb-2">3</p>
+                            <p class="font-semibold text-lg mb-1">Register & Pay</p>
+                            <p class="text-sm text-gray-600">Fill out the final registration form and submit the one-time registration and first monthly fee.</p>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-center text-lg font-semibold text-primary-navy">
+                        Ready to start? <a href="#" onclick="changePage('contact')" class="text-cta-red hover:underline">Contact Us Now</a>.
+                    </p>
+                </div>
+
+                <!-- Fee Structure Table (Responsive) -->
+                <h3 class="text-3xl font-bold text-primary-navy mb-4">Academy Fee Structure (Monthly)</h3>
+                <div class="overflow-x-auto animate-ready" style="transition-delay: 600ms;">
+                    <table class="w-full table-auto border-collapse fee-table">
+                        <thead>
+                            <tr class="bg-primary-navy text-white text-left shadow-lg">
+                                <th class="p-4 rounded-tl-lg">Program Name</th>
+                                <th class="p-4">Age Group</th>
+                                <th class="p-4">Monthly Fee (INR)</th>
+                                <th class="p-4">Registration Fee (One-Time)</th>
+                                <th class="p-4 rounded-tr-lg">Includes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700 bg-white divide-y divide-gray-200">
+                            <!-- Fee Row 1 -->
+                            <tr class="hover:bg-gray-100 transition duration-150">
+                                <td data-label="Program Name" class="p-4 font-bold text-primary-navy">Junior Foundations</td>
+                                <td data-label="Age Group" class="p-4">U-12</td>
+                                <td data-label="Monthly Fee" class="p-4 font-bold text-sporty-green">₹ 2,500</td>
+                                <td data-label="Registration Fee" class="p-4">₹ 5,000</td>
+                                <td data-label="Includes" class="p-4">4 sessions/week, basic equipment use.</td>
+                            </tr>
+                            <!-- Fee Row 2 -->
+                            <tr class="hover:bg-gray-100 transition duration-150">
+                                <td data-label="Program Name" class="p-4 font-bold text-primary-navy">Intermediate Skills</td>
+                                <td data-label="Age Group" class="p-4">U-16</td>
+                                <td data-label="Monthly Fee" class="p-4 font-bold text-sporty-green">₹ 3,200</td>
+                                <td data-label="Registration Fee" class="p-4">₹ 6,500</td>
+                                <td data-label="Includes" class="p-4">5 sessions/week, strength training access, match practice.</td>
+                            </tr>
+                            <!-- Fee Row 3 -->
+                            <tr class="hover:bg-gray-100 transition duration-150">
+                                <td data-label="Program Name" class="p-4 font-bold text-primary-navy">Elite Performance</td>
+                                <td data-label="Age Group" class="p-4">U-19 & Above</td>
+                                <td data-label="Monthly Fee" class="p-4 font-bold text-sporty-green">₹ 4,500</td>
+                                <td data-label="Registration Fee" class="p-4">₹ 8,000</td>
+                                <td data-label="Includes" class="p-4">6 sessions/week, video analysis, one-on-one sessions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. GALLERY -->
+        <section id="gallery" class="page-content content-section bg-primary-navy/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-sporty-green pb-2">Gallery: Moments of Excellence</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="overflow-hidden rounded-lg shadow-lg aspect-square animate-ready">
+                        <img src="https://placehold.co/400x400/0A1931/FFFFFF?text=Batting+Action" alt="Cricketer playing a cover drive" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-lg aspect-square animate-ready" style="transition-delay: 100ms;">
+                        <img src="https://placehold.co/400x400/00A859/FFFFFF?text=Coach+Advising" alt="Coach talking to students" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-lg aspect-square animate-ready" style="transition-delay: 200ms;">
+                        <img src="https://placehold.co/400x400/0A1931/FFFFFF?text=Fielding+Drills" alt="Players practicing fielding drills" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-lg aspect-square animate-ready" style="transition-delay: 300ms;">
+                        <img src="https://placehold.co/400x400/00A859/FFFFFF?text=Victory+Celebration" alt="Team celebrating a victory" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                    </div>
+                    <!-- Video Embed Placeholder -->
+                    <div class="col-span-2 md:col-span-4 rounded-lg shadow-xl bg-gray-200 flex items-center justify-center h-64 animate-ready" style="transition-delay: 400ms;">
+                        <p class="text-primary-navy text-xl font-semibold">Video Highlights Placeholder</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. SCHEDULES -->
+        <section id="schedules" class="page-content content-section">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-8 border-b-4 border-sporty-green pb-2">Weekly Training Schedules</h2>
+                <p class="text-lg text-gray-700 mb-6 animate-ready">All sessions are held at the main Sodepur Club ground unless otherwise noted. Schedules are subject to change due to weather or tournaments.</p>
+                
+                <div class="bg-white rounded-xl shadow-xl overflow-x-auto animate-ready" style="transition-delay: 200ms;">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-primary-navy text-white">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Day</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Junior (U-12)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Intermediate (U-16)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Elite (U-19+)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr><td class="px-6 py-4 font-bold">Mon</td><td class="px-6 py-4">4:00 PM - 6:00 PM</td><td class="px-6 py-4 bg-gray-50/50">Fitness & Drills (6:00 AM - 8:00 AM)</td><td class="px-6 py-4">Net Practice (4:30 PM - 7:30 PM)</td></tr>
+                            <tr><td class="px-6 py-4 font-bold">Tue</td><td class="px-6 py-4">OFF</td><td class="px-6 py-4">4:00 PM - 7:00 PM</td><td class="px-6 py-4">OFF</td></tr>
+                            <tr><td class="px-6 py-4 font-bold">Wed</td><td class="px-6 py-4">4:00 PM - 6:00 PM</td><td class="px-6 py-4">OFF</td><td class="px-6 py-4">Match Simulation (6:00 AM - 8:30 AM)</td></tr>
+                            <tr><td class="px-6 py-4 font-bold">Thu</td><td class="px-6 py-4">OFF</td><td class="px-6 py-4">4:00 PM - 7:00 PM</td><td class="px-6 py-4">4:30 PM - 7:30 PM</td></tr>
+                            <tr><td class="px-6 py-4 font-bold">Fri</td><td class="px-6 py-4">4:00 PM - 6:00 PM</td><td class="px-6 py-4 bg-gray-50/50">Net Practice (6:00 AM - 8:00 AM)</td><td class="px-6 py-4">4:30 PM - 7:30 PM</td></tr>
+                            <tr><td class="px-6 py-4 font-bold text-cta-red">Sat</td><td class="px-6 py-4 text-cta-red">Weekend Match (8:00 AM - 12:00 PM)</td><td class="px-6 py-4 text-cta-red">Weekend Match (8:00 AM - 1:00 PM)</td><td class="px-6 py-4 text-cta-red">Weekend Match (8:00 AM - 2:00 PM)</td></tr>
+                            <tr><td class="px-6 py-4 font-bold">Sun</td><td class="px-6 py-4" colspan="3">Rest Day / Optional One-on-One Sessions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. NEWS / ANNOUNCEMENTS -->
+        <section id="news" class="page-content content-section bg-primary-navy/5">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-cta-red pb-2">Club News & Announcements</h2>
+
+                <div class="space-y-6">
+                    <!-- Article 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-sporty-green animate-ready">
+                        <p class="text-sm text-gray-500 mb-1">October 25, 2025</p>
+                        <h3 class="text-2xl font-bold text-primary-navy mb-2">U-16 Team Secures Victory in District Tournament</h3>
+                        <p class="text-gray-700">Congratulations to the Intermediate Skills U-16 squad for their dominant performance and championship win this past weekend! Special shoutout to Captain Rohan for his match-winning century.</p>
+                        <a href="#" class="text-cta-red font-semibold mt-2 inline-block hover:underline">Read Match Report &rarr;</a>
+                    </div>
+                    <!-- Article 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg border-l-4 border-cta-red animate-ready" style="transition-delay: 150ms;">
+                        <p class="text-sm text-gray-500 mb-1">October 15, 2025</p>
+                        <h3 class="text-2xl font-bold text-primary-navy mb-2">Important Holiday Training Schedule Notice</h3>
+                        <p class="text-gray-700">Please note that all training will be suspended from Nov 1 to Nov 5 for the Diwali break. Elite batch players, check your WhatsApp group for personalized off-season fitness plans.</p>
+                        <a href="#" class="text-cta-red font-semibold mt-2 inline-block hover:underline">View Full Notice &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. FACILITIES -->
+        <section id="facilities" class="page-content content-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-sporty-green pb-2">World-Class Facilities</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="animate-ready">
+                        <img src="https://placehold.co/600x400/0A1931/FFFFFF?text=Modern+Turf+Nets" alt="Image of professional turf cricket nets" class="rounded-xl shadow-2xl mb-6">
+                    </div>
+                    <div class="animate-ready" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold text-sporty-green mb-3">Professional Playing Surfaces</h3>
+                        <p class="text-gray-700 mb-6">We provide multiple training surfaces including 4 dedicated turf wickets and 6 matting wickets, ensuring our students train on conditions that replicate match scenarios. All nets are floodlit for evening sessions.</p>
+                        <ul class="list-none space-y-3 text-primary-navy font-medium">
+                            <li class="flex items-center"><span class="text-sporty-green mr-3 text-xl">✔️</span> High-Speed Bowling Machines</li>
+                            <li class="flex items-center"><span class="text-sporty-green mr-3 text-xl">✔️</span> Dedicated Fitness & Gym Area</li>
+                            <li class="flex items-center"><span class="text-sporty-green mr-3 text-xl">✔️</span> Secure and Monitored Changing Rooms</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. CONTACT US -->
+        <section id="contact" class="page-content content-section bg-primary-navy/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-primary-navy mb-10 border-b-4 border-cta-red pb-2">Get in Touch with Sodepur Club</h2>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Contact Form -->
+                    <div class="bg-white p-8 rounded-xl shadow-2xl animate-ready">
+                        <h3 class="text-2xl font-bold text-primary-navy mb-5">Send Us a Message</h3>
+                        <form id="contact-form">
+                            <div class="mb-4">
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sporty-green focus:border-sporty-green">
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sporty-green focus:border-sporty-green">
+                            </div>
+                            <div class="mb-4">
+                                <label for="program" class="block text-sm font-medium text-gray-700 mb-1">Program of Interest</label>
+                                <select id="program" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sporty-green focus:border-sporty-green">
+                                    <option value="">Select a Program</option>
+                                    <option value="junior">Junior Foundations (U-12)</option>
+                                    <option value="intermediate">Intermediate Skills (U-16)</option>
+                                    <option value="elite">Elite Performance (U-19+)</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+                                <textarea id="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-sporty-green focus:border-sporty-green"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-cta-red text-white font-bold py-3 rounded-lg hover:bg-red-600 transition duration-300 shadow-lg">
+                                Submit Inquiry
+                            </button>
+                            <p id="contact-message" class="mt-4 text-center text-sm font-medium text-sporty-green hidden">Thank you! We have received your inquiry and will be in touch shortly.</p>
+                        </form>
+                    </div>
+
+                    <!-- Contact Details & Map -->
+                    <div class="animate-ready" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold text-primary-navy mb-5">Our Details</h3>
+                        <div class="space-y-4 mb-8 text-lg">
+                            <p class="flex items-center"><span class="text-sporty-green mr-3 text-2xl">📞</span> <span class="font-semibold">Phone:</span> +91 98765 43210</p>
+                            <p class="flex items-center"><span class="text-sporty-green mr-3 text-2xl">📧</span> <span class="font-semibold">Email:</span> admissions@sodepurclub.in</p>
+                            <p class="flex items-start"><span class="text-sporty-green mr-3 text-2xl">📍</span> <span class="font-semibold">Address:</span> Sodepur Club Ground, Main Road, Kolkata - 700110, West Bengal.</p>
+                        </div>
+
+                        <!-- Map Placeholder -->
+                        <div class="bg-gray-300 h-64 w-full rounded-xl shadow-lg flex items-center justify-center">
+                            <p class="text-primary-navy font-semibold">Google Map Location Placeholder</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary-navy text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2025 Sodepur Club Cricket Academy. All rights reserved.</p>
+            <p class="mt-2 text-sporty-green">Excellence. Discipline. Success.</p>
+        </div>
+    </footer>
+
+    <script>
+        // State management for Single Page Application (SPA) navigation
+        let currentPage = 'home';
+        const pageSections = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const contactForm = document.getElementById('contact-form');
+        const contactMessage = document.getElementById('contact-message');
+        const header = document.getElementById('main-header'); // NEW: Get header element
+
+        // --- NEW ANIMATION LOGIC ---
+
+        // Intersection Observer setup for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const animationObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // When element is in view, add the 'animate-in' class
+                    entry.target.classList.add('animate-in');
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, observerOptions);
+
+        // Function to find all elements that need scroll animation on the current page
+        function setupAnimations(pageId) {
+            // Unobserve any previous elements from other pages before setting up new ones
+            document.querySelectorAll('.animate-ready').forEach(el => {
+                animationObserver.unobserve(el);
+                // Reset state for elements that might be re-shown (though not typical in this SPA structure)
+                el.classList.remove('animate-in');
+            });
+
+            const target = document.getElementById(pageId);
+            if (target) {
+                // Find all elements marked for animation within the active page
+                const animatableElements = target.querySelectorAll('.animate-ready');
+                animatableElements.forEach(el => {
+                    animationObserver.observe(el);
+                });
+            }
+        }
+
+        // Handle header shadow on scroll
+        function handleScroll() {
+            if (window.scrollY > 50) {
+                // Add a strong shadow when scrolling down
+                header.classList.add('shadow-xl', 'shadow-primary-navy/50');
+            } else {
+                // Remove shadow when back at the top
+                header.classList.remove('shadow-xl', 'shadow-primary-navy/50');
+            }
+        }
+        window.addEventListener('scroll', handleScroll);
+
+        // --- END NEW ANIMATION LOGIC ---
+
+
+        // Function to handle page change
+        function changePage(pageId) {
+            // Hide all pages
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the target page with a slight delay for transition effect
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                // Use a short delay before applying 'active' to allow content to fade
+                setTimeout(() => {
+                    targetSection.classList.add('active');
+                    currentPage = pageId;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Trigger scroll animations for the new page content
+                    setupAnimations(pageId);
+                }, 100); 
+
+                // Update active link styling
+                navLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    if (link.getAttribute('data-page') === pageId) {
+                        link.classList.add('active-link');
+                    }
+                });
+            }
+        }
+
+        // Initialize the first page and event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup navigation click handlers
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    changePage(pageId);
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initial page load
+            changePage(currentPage); 
+            // Also call scroll handler in case the page loads scrolled down
+            handleScroll();
+
+            // Handle Contact Form Submission
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Simulate form submission success
+                contactForm.reset();
+                contactMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    contactMessage.classList.add('hidden');
+                }, 5000);
+            });
+        });
+    </script>
+
+</body>
+</html>
